@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +16,11 @@ namespace Advanced_Lesson_3_Static_Interface
         /// </summary>
         public static void AL3_P1_3()
         {
+            for (int i = 0; i < 100; i++)
+            {
+                UniqueItem c = new UniqueItem();
+            }
+            Console.WriteLine(UniqueItem.Id);
         }
 
         /// <summary>
@@ -35,7 +40,57 @@ namespace Advanced_Lesson_3_Static_Interface
         /// </summary>
         public static void AL3_P3_3()
         {
+            GuessType("asdfg");
+            GuessType<uint>(10);
+            GuessType(13.23456);
+            GuessType(13.234);
+            DateTime date2 = new DateTime(2019, 7, 20);
+            GuessType(date2);
         }
 
-    }    
+        public static void GuessType<T>(T type)
+        {
+            switch (type)
+            {
+                case string _type:
+                    if (_type.Length != 5)
+                        goto default;
+                    else
+                        Console.WriteLine("Вы передали строку длиной 5 символов");
+                    break;
+                case uint _type:
+                    Console.WriteLine("Вы передали положительное целое число");
+                    break;
+                case double _type:
+                    int integer = Math.Abs((int)_type);
+                    int count = integer.ToString().Length; // длина целой части
+                    double fractional = Math.Abs(_type) - integer;
+                    count = count + fractional.ToString().Length - 2; // длина всего числа
+                    if (count != 5)
+                        goto default;
+                    else
+                        Console.WriteLine("Вы передали вещественное число с 5 значимыми цифрами.");
+                    break;
+                case DateTime _type:
+                    Console.WriteLine("Вы передали время");
+                    break;
+                default:
+                    Console.WriteLine("Понятия не имею, что вы передали");
+                    break;
+            }
+        }
+    }
+    public class UniqueItem
+    {
+        public static int Id;
+        public string Name;
+        public UniqueItem()
+        {
+            Id++;
+        }
+        static UniqueItem()
+        {
+            Id = 1000;
+        }
+    }
 }
